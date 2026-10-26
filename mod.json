@@ -63,10 +63,10 @@
 		"buffer-ticks": {
 			"type": "int",
 			"name": "Buffer Window (ticks)",
-			"description": "How many physics ticks (at 240 TPS) an early tap stays alive. <cy>4</c> ticks is about one 60 FPS frame.",
+			"description": "How many physics ticks (at 240 TPS) an early tap stays alive, acting as if you were still holding. <cy>4</c> = 1 frame, <cy>24</c> = 0.1s, <cy>60</c> = 0.25s, <cy>120</c> = 0.5s (feels like a hold level).",
 			"default": 4,
 			"min": 1,
-			"max": 8,
+			"max": 120,
 			"enable-if": "enabled && ground-orb-buffer",
 			"control": {
 				"arrows": true,
@@ -102,6 +102,39 @@
 				"slider-step": 1,
 				"input": true
 			}
+		},
+
+		"assist-title": {
+			"type": "title",
+			"name": "Smart Assist (Experimental)",
+			"description": "Windows only (does nothing on other platforms). All gamemodes."
+		},
+		"smart-assist": {
+			"type": "bool",
+			"name": "Smart Assist",
+			"description": "On every press and release, the mod secretly plays out the next moment with your input on time, 1 tick later, 2 ticks later and so on. If on time would crash but slightly later gets you through the gap, your input is moved to the earliest timing that survives. It can only make inputs <cy>later</c>, never earlier.\n\n<cr>Counts as a hack: lists and leaderboards will not accept runs with this on.</c>",
+			"default": false,
+			"enable-if": "enabled"
+		},
+		"assist-max-shift": {
+			"type": "int",
+			"name": "Max Correction (ticks)",
+			"description": "How far the assist may push an input later, in ticks at 240 TPS. <cy>4</c> = 1 frame, <cy>8</c> = 2 frames, <cy>16</c> = 4 frames.",
+			"default": 4,
+			"min": 1,
+			"max": 16,
+			"enable-if": "enabled && smart-assist",
+			"control": { "arrows": true, "slider": true, "slider-step": 1, "input": true }
+		},
+		"assist-lookahead": {
+			"type": "int",
+			"name": "Look Ahead (ticks)",
+			"description": "How far into the future each timing is checked, in ticks at 240 TPS. Longer sees further past a gap but assumes you keep the same input that whole time. <cy>36</c> is about 0.15 seconds.",
+			"default": 36,
+			"min": 8,
+			"max": 120,
+			"enable-if": "enabled && smart-assist",
+			"control": { "arrows": true, "slider": true, "slider-step": 4, "input": true }
 		},
 
 		"wave-title": {
