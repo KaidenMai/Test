@@ -1,0 +1,150 @@
+{
+	"geode": "5.11.2",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "kaiden.input-buffer",
+	"name": "Input Buffer",
+	"version": "v1.0.0",
+	"developer": "Kaiden",
+	"description": "Predictive input buffer: no more dead clicks from tapping a few ticks too early.",
+	"tags": ["gameplay", "utility"],
+	"settings": {
+		"general-title": {
+			"type": "title",
+			"name": "General"
+		},
+		"enabled": {
+			"type": "bool",
+			"name": "Enable Input Buffer",
+			"description": "Master switch. When off, every input is passed straight to the game untouched.",
+			"default": true
+		},
+		"target-tps": {
+			"type": "int",
+			"name": "Target TPS",
+			"description": "Physics ticks per second you play at. Vanilla 2.2 is <cy>240</c>. All tick values below are written for 240 TPS and are auto-scaled to this value (e.g. 4 ticks at 240 TPS becomes 8 ticks at 480 TPS), so the real-time window stays the same if you use a TPS bypass.",
+			"default": 240,
+			"min": 60,
+			"max": 2000,
+			"enable-if": "enabled",
+			"control": {
+				"arrows": true,
+				"arrow-step": 60,
+				"big-arrows": true,
+				"big-arrow-step": 240,
+				"slider": false,
+				"input": true
+			}
+		},
+		"debug-logging": {
+			"type": "bool",
+			"name": "Debug Logging",
+			"description": "Write a <cy>log::info</c> line every time an input is saved, delayed, fired or expires. Open the Geode console to watch it live.",
+			"default": true,
+			"enable-if": "enabled"
+		},
+
+		"buffer-title": {
+			"type": "title",
+			"name": "Ground & Orb Buffer",
+			"description": "Cube, Ball, Robot, Spider"
+		},
+		"ground-orb-buffer": {
+			"type": "bool",
+			"name": "Ground & Orb Buffering",
+			"description": "If you tap mid-air and let go before landing or reaching an orb, the click is kept alive for the buffer window and fires on contact.",
+			"default": true,
+			"enable-if": "enabled"
+		},
+		"buffer-ticks": {
+			"type": "int",
+			"name": "Buffer Window (ticks)",
+			"description": "How many physics ticks (at 240 TPS) an early tap stays alive. <cy>4</c> ticks is about one 60 FPS frame.",
+			"default": 4,
+			"min": 1,
+			"max": 8,
+			"enable-if": "enabled && ground-orb-buffer",
+			"control": {
+				"arrows": true,
+				"slider": true,
+				"slider-step": 1,
+				"input": true
+			}
+		},
+
+		"stretch-title": {
+			"type": "title",
+			"name": "Tap Stretching",
+			"description": "Ship, UFO, Swing Copter"
+		},
+		"tap-stretch": {
+			"type": "bool",
+			"name": "Tap Stretching",
+			"description": "Micro-taps are held for at least the minimum duration below so short inputs come out the same every time.",
+			"default": true,
+			"enable-if": "enabled"
+		},
+		"tap-stretch-ticks": {
+			"type": "int",
+			"name": "Minimum Hold (ticks)",
+			"description": "Shortest hold a tap is stretched to, in ticks at 240 TPS.",
+			"default": 2,
+			"min": 1,
+			"max": 8,
+			"enable-if": "enabled && tap-stretch",
+			"control": {
+				"arrows": true,
+				"slider": true,
+				"slider-step": 1,
+				"input": true
+			}
+		},
+
+		"wave-title": {
+			"type": "title",
+			"name": "Wave"
+		},
+		"wave-mode": {
+			"type": "string",
+			"name": "Wave Input Style",
+			"description": "<cy>Min Hold</c>: very short taps are held for a minimum time.\n<cy>Min Gap</c>: after letting go, the next press is held back until a minimum gap has passed.\n<cy>Grid Snap</c>: every press and release lands on a fixed tick grid.",
+			"default": "None",
+			"one-of": ["None", "Min Hold", "Min Gap", "Grid Snap"],
+			"enable-if": "enabled"
+		},
+		"wave-min-hold-ticks": {
+			"type": "int",
+			"name": "Min Hold (ticks)",
+			"description": "Used by <cy>Min Hold</c>. Shortest wave hold, in ticks at 240 TPS.",
+			"default": 2,
+			"min": 1,
+			"max": 8,
+			"enable-if": "enabled",
+			"control": { "arrows": true, "slider": true, "slider-step": 1, "input": true }
+		},
+		"wave-min-gap-ticks": {
+			"type": "int",
+			"name": "Min Gap (ticks)",
+			"description": "Used by <cy>Min Gap</c>. Shortest gap between a release and the next press, in ticks at 240 TPS.",
+			"default": 2,
+			"min": 1,
+			"max": 8,
+			"enable-if": "enabled",
+			"control": { "arrows": true, "slider": true, "slider-step": 1, "input": true }
+		},
+		"wave-grid-ticks": {
+			"type": "int",
+			"name": "Grid Size (ticks)",
+			"description": "Used by <cy>Grid Snap</c>. Inputs are pushed forward to the next multiple of this many ticks (at 240 TPS).",
+			"default": 2,
+			"min": 1,
+			"max": 8,
+			"enable-if": "enabled",
+			"control": { "arrows": true, "slider": true, "slider-step": 1, "input": true }
+		}
+	}
+}
